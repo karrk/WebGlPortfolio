@@ -27,19 +27,18 @@ public class QnAPage : MonoBehaviour
     private void Start()
     {
         _closeBtn.onClick.AddListener(Close);
-        _comBtn.onClick.AddListener(StartAnswer);
     }
 
-    private void Show()
+    public void Show()
     {
-        _sq?.Kill();
+        _sq?.Kill(); 
 
         _sq = DOTween.Sequence();
         _sq.Append(RT.DOPivotX(0, 0));
         _sq.Append(RT.DOPivotX(1, 0.25f));
     }
 
-    private void Close()
+    public void Close()
     {
         _sq?.Kill();
 
@@ -47,15 +46,21 @@ public class QnAPage : MonoBehaviour
         _sq.Append(RT.DOPivotX(0, 0.25f));
         _sq.OnComplete(() =>
         {
-            _lh.Show();
+            _lh.Show(); // 따로빼기
             this.gameObject.SetActive(false);
         });
     }
 
-    [SerializeField] private Button _comBtn;
-
-    private void StartAnswer()
+    public void StartAnswer(int m_qnaIdx)
     {
-        Speaker.Instance.ShowBubbleText(0);
+        Speaker.Instance.ShowBubbleText(m_qnaIdx);
+    }
+
+    public void BtnClickActive(bool m_active)
+    {
+        foreach (var btn in GetComponentsInChildren<Button>())
+        {
+            btn.interactable = m_active;
+        }
     }
 }
